@@ -10,7 +10,8 @@
     "dev": "nodemon --watch ./src --inspect ./src/index.mjs",
     "start": "node ./src/index.mjs",
     "debug": "node --inspect ./src/index.mjs",
-    "test": "jest --no-cache ./src"
+    "test": "jest --no-cache ./src --coverage",
+    "test:debug": "node --inspect `which jest` --no-cache ./src"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
@@ -22,7 +23,8 @@
     "esbuild": "^0.12.7",
     "esbuild-jest-transform": "^1.0.7",
     "jest": "^27.0.4",
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.7",
+    "supertest": "^6.1.3"
   },
   "jest": {
     "verbose": true,
@@ -42,6 +44,11 @@
       "mjs",
       "json",
       "node"
+    ],
+    "collectCoverageFrom": [
+      "**/*.{js,jsx,mjs}",
+      "!**/node_modules/**",
+      "!**/coverage/**"
     ]
   }
 }

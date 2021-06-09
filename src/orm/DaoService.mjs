@@ -39,40 +39,6 @@ export class DaoService {
       .value(); 
   }
 
-  // NOTE: for now this action is not supported by frontend.
-  static delete(key, timestamp = null) {
-    if (_.chain(key).isEqual(undefined).value()) {
-      throw new Error('No value in payload body.');
-    };
-    const index = _.chain(indexOrmForGet(orm))
-      .findIndex(item =>
-        timestamp
-          ? (item.key === key && item.timestamp <= +timestamp)
-          : item.key === key)
-      .value();
-    const removedItem = orm.splice(index, 1);
-    logger.DEBUG('delete/removedItem,timestamp,key:', removedItem, timestamp, key);
-    return orm;
-  }
-
-  static update(key, data, timestamp = null) {
-    if (_.chain(key).isEqual(undefined).value()) {
-      throw new Error('No value in payload body.');
-    };
-    if (_.chain(data).get('value').isEqual(undefined).value()) {
-      throw new Error('No value in payload body.');
-    };
-    const index = _.chain(indexOrmForGet(orm))
-      .findIndex(item =>
-        timestamp
-          ? (item.key === key && item.timestamp <= +timestamp)
-          : item.key === key)
-      .value();
-    const updatedItem = _.chain(orm).get(index, {}).merge(data).value();
-    logger.DEBUG('update/updatedItem,timestamp,data,key:', updatedItem, timestamp, data, key);
-    return updatedItem;
-  }
-
   static create(data) {
     if (_.chain(data).get('key').isEqual(undefined).value()) {
       throw new Error('No value in payload body.');
@@ -84,8 +50,42 @@ export class DaoService {
       ...data, timestamp: Date.now(),
     });
     logger.DEBUG('create/data.orm:', data, orm);
-    return orm;
+    return _.chain(orm).get(orm.length - 1).value();
   }
+
+  // NOTE: for now those actions below are not supported by frontend.
+  // static delete(key, timestamp = null) {
+  //   if (_.chain(key).isEqual(undefined).value()) {
+  //     throw new Error('No value in payload body.');
+  //   };
+  //   const index = _.chain(indexOrmForGet(orm))
+  //     .findIndex(item =>
+  //       timestamp
+  //         ? (item.key === key && item.timestamp <= +timestamp)
+  //         : item.key === key)
+  //     .value();
+  //   const removedItem = orm.splice(index, 1);
+  //   logger.DEBUG('delete/removedItem,timestamp,key:', removedItem, timestamp, key);
+  //   return orm;
+  // }
+
+  // static update(key, data, timestamp = null) {
+  //   if (_.chain(key).isEqual(undefined).value()) {
+  //     throw new Error('No value in payload body.');
+  //   };
+  //   if (_.chain(data).get('value').isEqual(undefined).value()) {
+  //     throw new Error('No value in payload body.');
+  //   };
+  //   const index = _.chain(indexOrmForGet(orm))
+  //     .findIndex(item =>
+  //       timestamp
+  //         ? (item.key === key && item.timestamp <= +timestamp)
+  //         : item.key === key)
+  //     .value();
+  //   const updatedItem = _.chain(orm).get(index, {}).merge(data).value();
+  //   logger.DEBUG('update/updatedItem,timestamp,data,key:', updatedItem, timestamp, data, key);
+  //   return updatedItem;
+  // }
 };
 
 export default DaoService;

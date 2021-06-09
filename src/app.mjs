@@ -1,7 +1,12 @@
+import _ from 'lodash';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import DaoService from './orm/DaoService.mjs';
+import {
+  POST_FORMAT_INVALID,
+  DATA_NOT_FOUND,
+} from './errors.mjs';
 
 const app = express();
 
@@ -26,11 +31,34 @@ app.get('/api/keys', (req, res) => {
 });
 
 app.post('/api/keys', (req, res) => {
-  res.json(DaoService.create(req.body));
+  /* NOTE: if logic in controller is too complex in the future,
+           we should move them to exclusive folder or file.
+   */
+  const formattedData = _.chain(req.body)
+    .toPairs()
+    .map(([key, value]) => ({ key, value }))
+    .value();
+  if (formattedData.length !== 1) {
+    res.status(400);
+    res.json({ error: POST_FORMAT_INVALID });
+    return;
+  }
+  const value = DaoService.create(_.chain(formattedData).get(0).value());
+  res.json(value);
 });
 
 app.get('/api/keys/:key', (req, res) => {
-  res.json(DaoService.get(req.params.key, req.query.timestamp));
+  /* NOTE: if logic in controller is too complex in the future,
+           we should move them to exclusive folder or file.
+   */
+  const value = _.chain(DaoService.get(req.params.key, req.query.timestamp))
+    .get('value');
+  if (_.chain(value).identity().isUndefined().value()) {
+    res.status(404);
+    res.json({ error: DATA_NOT_FOUND });
+    return;
+  }
+  res.json({ value });
 });
 
 // NOTE: home path redirector

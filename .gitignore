@@ -2,3 +2,4 @@ node_modules
 dist
 persist.db.json
 yarn-error.log
+coverage
