@@ -3,13 +3,13 @@
 - Base on single thread interpreter of JavaScript.
 - Build project with latest LTS nodejs `v14.17.0` and `mjs` enabled.
   - Ref: https://nodejs.org/dist/latest-v14.x/docs/api/esm.html#esm_enabling
+  - Ref: https://nodejs.org/dist/latest-v14.x/docs/api/packages.html#packages_type
 - For bundler thing, here we use esbuild instead of webpack.
   - Ref: https://esbuild.github.io/
 - Here we host it with Heroku.
   - Ref: https://www.heroku.com/
 
-#### Quicksart
-
+#### Quickstart
 - Some of build-in task defined in package.json already.
 ```
     ...
@@ -27,7 +27,7 @@
     "test": "jest --no-cache ./src --coverage",
 
     # NOTE: run test with debug mode
-    "test:debug": "node --inspect-brk `which jest` ./src"
+    "test:debug": "node --inspect `which jest` --no-cache ./src"
   },
     ...
 ```
@@ -44,20 +44,20 @@ yarn debug
 ```
 
 #### Playground with CURL
-
+- Caveat! Your key should be encoded by `encodeURIComponent` with JavaScript, if you want to type it in the URL directly.
 ```
-curl -X GET http://127.0.0.1:3000/api/keys
-curl -X POST http://127.0.0.1:3000/api/keys --data '{"key": "scott", "value": 100}' -H "content-type: application/json"
+curl -X GET https://versioning-key-value.herokuapp.com/object
+curl -X POST https://versioning-key-value.herokuapp.com/object --data '{"scott": 100}' -H "content-type: application/json"
 
 # NOTE: get value = 100
-curl -X GET http://127.0.0.1:3000/api/keys/scott
+curl -X GET https://versioning-key-value.herokuapp.com/object/scott
 
 # NOTE: get value = 101
-curl -X POST http://127.0.0.1:3000/api/keys --data '{"key": "scott", "value": 101}' -H "content-type: application/json"
-curl -X GET http://127.0.0.1:3000/api/keys/scott
+curl -X POST https://versioning-key-value.herokuapp.com/object --data '{"scott": 101}' -H "content-type: application/json"
+curl -X GET https://versioning-key-value.herokuapp.com/object/scott
 
 # NOTE: you need to input a timestamp for query versioning value
-curl -X GET http://127.0.0.1:3000/api/keys/scott?timestamp=$timestamp
+curl -X GET https://versioning-key-value.herokuapp.com/object/scott?timestamp=$timestamp
 ```
 
 #### Troubleshooting

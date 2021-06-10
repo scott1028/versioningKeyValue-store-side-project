@@ -39,6 +39,8 @@ app.post('/object', (req, res) => {
   /* NOTE: if logic in controller is too complex in the future,
            we should move them to exclusive folder or file.
    */
+
+  // NOTE: valid input parameters
   const formattedData = _.chain(req.body)
     .toPairs()
     .map(([key, value]) => ({ key, value }))
@@ -48,6 +50,12 @@ app.post('/object', (req, res) => {
     res.json({ error: POST_FORMAT_INVALID });
     return;
   }
+  if (_.chain(formattedData).get([0, 'key']).isEmpty().value()) {
+    res.status(400);
+    res.json({ error: POST_FORMAT_INVALID });
+    return;
+  }
+
   const value = DaoService.create(_.chain(formattedData).get(0).value());
   res.json(value);
 });
@@ -68,7 +76,7 @@ app.get('/object/:key', (req, res) => {
 
 // NOTE: home path redirector
 app.use(function (req, res) {
-  res.redirect(`/object?timestamp=${Date.now()}`);
+  res.redirect(`/object?timestamp=`);
 });
 
 export default app;

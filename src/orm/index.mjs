@@ -31,6 +31,6 @@ export const ormPersister = () => {
   fs.writeFileSync('./persist.db.json', JSON.stringify(orm, null, 2), 'utf8');
   setTimeout(ormPersister, 1000);
 };
-!_.chain(process).get('env.NODE_ENV').isEqual('test') && setTimeout(ormPersister, 1000);
+!_.chain(process).get('env.NODE_ENV').isEqual('test').value() && setTimeout(ormPersister, 1000);
 
 export default orm;
