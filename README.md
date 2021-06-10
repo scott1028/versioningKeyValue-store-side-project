@@ -5,6 +5,8 @@
   - Ref: https://nodejs.org/dist/latest-v14.x/docs/api/esm.html#esm_enabling
 - For bundler thing, here we use esbuild instead of webpack.
   - Ref: https://esbuild.github.io/
+- Here we host it with Heroku.
+  - Ref: https://www.heroku.com/
 
 #### Quicksart
 
