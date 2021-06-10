@@ -19,11 +19,7 @@ export class DaoService {
           : true)
       .uniqBy('key')
       .value();
-    return {
-      data,
-      total: data.length,
-      totalAll: orm.length,
-    }
+    return data;
   }
 
   static get(key, timestamp = null) {
@@ -85,6 +81,20 @@ export class DaoService {
   //   const updatedItem = _.chain(orm).get(index, {}).merge(data).value();
   //   logger.DEBUG('update/updatedItem,timestamp,data,key:', updatedItem, timestamp, data, key);
   //   return updatedItem;
+  // }
+
+  // static statistic(timestamp = null) {
+  //   logger.DEBUG('statistic/orm,timestamp:', JSON.stringify(orm, null, 2), timestamp);
+  //   const data = _.chain(indexOrmForList(orm))
+  //     .filter(item =>
+  //       timestamp
+  //         ? item.timestamp <= +timestamp
+  //         : true)
+  //     .uniqBy('key')
+  //     .value();
+  //   return {
+  //     totalWithlatest: data.length,
+  //     total: data.length,
   // }
 };
 

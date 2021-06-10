@@ -13,7 +13,7 @@ export const indexOrmForGet = orm => _.chain(orm)
   .orderBy(['key', 'timestamp'], ['asc', 'desc'])
   .value();
 
-// NOTE: we need to find the latest data first
+// NOTE: we need to find the latest data first with latest timestamp first sorting
 export const indexOrmForList = orm => _.chain(orm)
   .orderBy(['timestamp', 'key'], ['desc', 'asc'])
   .value();

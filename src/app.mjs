@@ -22,15 +22,20 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // NOTE: we don't need to support this type
-// app.delete('/api/keys/:key', (req, res) => {
+// app.delete('/object/:key', (req, res) => {
 //   res.json(DaoService.delete(req.params.key, req.query.timestamp));
 // });
 
-app.get('/api/keys', (req, res) => {
+// NOTE: we don't need to support this type
+// app.get('/statistic', (req, res) => {
+//   res.json(DaoService.statisic(req.query.timestamp))
+// });
+
+app.get('/object', (req, res) => {
   res.json(DaoService.list(req.query.timestamp));
 });
 
-app.post('/api/keys', (req, res) => {
+app.post('/object', (req, res) => {
   /* NOTE: if logic in controller is too complex in the future,
            we should move them to exclusive folder or file.
    */
@@ -47,7 +52,7 @@ app.post('/api/keys', (req, res) => {
   res.json(value);
 });
 
-app.get('/api/keys/:key', (req, res) => {
+app.get('/object/:key', (req, res) => {
   /* NOTE: if logic in controller is too complex in the future,
            we should move them to exclusive folder or file.
    */
@@ -63,7 +68,7 @@ app.get('/api/keys/:key', (req, res) => {
 
 // NOTE: home path redirector
 app.use(function (req, res) {
-  res.redirect(`/api/keys?timestamp=${Date.now()}`);
+  res.redirect(`/object?timestamp=${Date.now()}`);
 });
 
 export default app;

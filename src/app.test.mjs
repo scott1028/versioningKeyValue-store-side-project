@@ -9,14 +9,13 @@ test('app should be defined', () => {
 
 test('api access testing', () => new Promise(done => {
   request(app)
-    .get('/api/keys')
+    .get('/object')
     .expect('Content-Type', /json/)
     .expect(200)
     .end(function(err, res) {
       if (err) throw err;
       // NOTE: https://stackoverflow.com/questions/50676554/jest-expect-any-not-working-as-expected
-      expect(res.body).toEqual(expect.any(Object));
-      expect(res.body.data).toEqual(expect.any(Array));
+      expect(res.body).toEqual(expect.any(Array));
       done();
     });
 }));
@@ -31,7 +30,7 @@ describe('api access testing', () => {
 
   test('api access testing by create', () => new Promise(async done => {
     request(app)
-      .post('/api/keys')
+      .post('/object')
       .send({ [key]: value })
       .expect('Content-Type', /json/)
       .expect(200)
@@ -49,7 +48,7 @@ describe('api access testing', () => {
 
   test('api access testing by get', () => new Promise(async done => {
     request(app)
-      .get(`/api/keys/${key}`)
+      .get(`/object/${key}`)
       .expect('Content-Type', /json/)
       .expect(200)
       .end(function(err, res) {
@@ -62,7 +61,7 @@ describe('api access testing', () => {
 
   test('api access testing by update', () => new Promise(async done => {
     request(app)
-      .post('/api/keys')
+      .post('/object')
       .send({ [key]: newValue })
       .expect('Content-Type', /json/)
       .expect(200)
@@ -80,7 +79,7 @@ describe('api access testing', () => {
 
   test('api access testing by get with timestamp', () => new Promise(async done => {
     request(app)
-      .get(`/api/keys/${key}`)
+      .get(`/object/${key}`)
       .query({ timestamp })
       .expect('Content-Type', /json/)
       .expect(200)
@@ -94,7 +93,7 @@ describe('api access testing', () => {
 
   test('api access testing by get near to newTimestamp', () => new Promise(async done => {
     request(app)
-      .get(`/api/keys/${key}`)
+      .get(`/object/${key}`)
       .query({ timestamp: newTimestamp + 1 })
       .expect('Content-Type', /json/)
       .expect(200)
